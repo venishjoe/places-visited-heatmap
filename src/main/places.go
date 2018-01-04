@@ -112,8 +112,29 @@ func main() {
 
 			//Process response from service if JSON status is OK
 			if jsonStatusCode.String() == "OK" {
+				jsonIndex := 0
 				indexInner := 0
-				formattedAddressArray := gjson.Get(responseString, "results.#.formatted_address")
+
+				if gjson.Get(responseString, "results.#").Int() > 1 {
+					fmt.Println("Multiple locations returned for addess " + fileWithLocationDataScanner.Text() + ". Select right location to proceed.")
+					formattedAddressArraySelection := gjson.Get(responseString, "results.#.formatted_address")
+					selectionIndex := 1
+					for _, formattedAddressSelection := range formattedAddressArraySelection.Array() {
+						fmt.Println("\t" + strconv.Itoa(selectionIndex) + ". " + formattedAddressSelection.String())
+						selectionIndex++
+					}
+					fmt.Print("\nEnter Selection: ")
+					var addressSelection int
+					_, erorReadingUserInput := fmt.Scanf("%d", &addressSelection)
+					if addressSelection <= 0 || addressSelection > selectionIndex {
+						fmt.Println("Wrong Selection. Stopping execution of further locations.")
+						break
+					}
+					handleFatalError(erorReadingUserInput)
+					jsonIndex = addressSelection - 1
+				}
+
+				formattedAddressArray := gjson.Get(responseString, "results."+strconv.Itoa(jsonIndex)+".formatted_address")
 				for _, formattedAddress := range formattedAddressArray.Array() {
 					fmt.Fprintf(locationDataFileWithLatLng, formattedAddress.String()+"$")
 					addressComponentsArray := gjson.Get(responseString, "results."+strconv.Itoa(indexInner)+".address_components.#.short_name")
