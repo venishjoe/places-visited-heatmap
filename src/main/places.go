@@ -92,9 +92,11 @@ func main() {
 	var locationHeatMap LocationHeatMap
 
 	//Iterate location data file and process records
-	log.Println("Processing locations........")
+	indexRoot := 1
 	for fileWithLocationDataScanner.Scan() {
+		log.Println("Processing location " + strconv.Itoa(indexRoot) + "......." + fileWithLocationDataScanner.Text())
 		googleAPIConstructedURL := googleAPIBaseURL + url.QueryEscape(fileWithLocationDataScanner.Text())
+		fmt.Fprintf(locationDataFileWithLatLng, strconv.Itoa(indexRoot)+"$"+fileWithLocationDataScanner.Text()+"$")
 
 		response, errFromAPI := httpClient.Get(googleAPIConstructedURL)
 		handleFatalError(errFromAPI)
@@ -117,11 +119,11 @@ func main() {
 					addressComponentsArray := gjson.Get(responseString, "results."+strconv.Itoa(indexInner)+".address_components.#.short_name")
 
 					for _, addressComponentsArray := range addressComponentsArray.Array() {
-						fmt.Fprintf(locationDataFileWithLatLng, addressComponentsArray.String()+"$")
+						fmt.Fprintf(locationDataFileWithLatLng, addressComponentsArray.String()+"^")
 					}
 					geometryLocationLat := gjson.Get(responseString, "results."+strconv.Itoa(indexInner)+".geometry.location.lat")
 					geometryLocationLng := gjson.Get(responseString, "results."+strconv.Itoa(indexInner)+".geometry.location.lng")
-					fmt.Fprintf(locationDataFileWithLatLng, geometryLocationLat.String()+"$"+geometryLocationLng.String()+"\n")
+					fmt.Fprintf(locationDataFileWithLatLng, "$"+geometryLocationLat.String()+"$"+geometryLocationLng.String()+"\n")
 
 					if len(locationHeatMap.LocationHeatMap) == 0 {
 						locationHeatMap.LocationHeatMap = append(locationHeatMap.LocationHeatMap,
@@ -139,9 +141,14 @@ func main() {
 				}
 			} else {
 				log.Println("JSON Error!")
+				fmt.Fprintf(locationDataFileWithLatLng, "ERROR!\n")
 			}
+		} else {
+			log.Println("JSON Error!")
+			fmt.Fprintf(locationDataFileWithLatLng, "ERROR!\n")
 		}
 		googleAPIConstructedURL = ""
+		indexRoot++
 	}
 	log.Println("Completed")
 	log.Println("Generating places JS........")
