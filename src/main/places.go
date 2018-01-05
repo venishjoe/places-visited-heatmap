@@ -116,7 +116,7 @@ func main() {
 				indexInner := 0
 
 				if gjson.Get(responseString, "results.#").Int() > 1 {
-					fmt.Println("Multiple locations returned for addess " + fileWithLocationDataScanner.Text() + ". Select right location to proceed.")
+					fmt.Println("Multiple addresses returned for location " + fileWithLocationDataScanner.Text() + ". Select right address to proceed.")
 					formattedAddressArraySelection := gjson.Get(responseString, "results.#.formatted_address")
 					selectionIndex := 1
 					for _, formattedAddressSelection := range formattedAddressArraySelection.Array() {
@@ -125,7 +125,7 @@ func main() {
 					}
 					fmt.Print("\nEnter Selection: ")
 					var addressSelection int
-					_, erorReadingUserInput := fmt.Scanf("%d", &addressSelection)
+					_, erorReadingUserInput := fmt.Scanf("%d\n", &addressSelection)
 					if addressSelection <= 0 || addressSelection > selectionIndex {
 						fmt.Println("Wrong Selection. Stopping execution of further locations.")
 						break
