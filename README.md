@@ -1,6 +1,7 @@
-<h1><center>Places Visited Heatmap</center></h1>
+# Places Visited Heatmap
 
 ## Getting Started
+
 I had a list of cities, addresses, landmarks etc. visited by me over the years and I was looking into ways to visualize those. 
 During my search, I came across Google Maps JavaScript API which not only visualizes location data but also has ways to show places which are visited more often than others. But the API needs location data in a specific format with latitue and longitude coordinates in a JavaScript along with weight for each. 
 
@@ -8,11 +9,13 @@ This project is to convert my plain text cities, addresses, landmark etc. data t
 
 End result will look like below. This is generated with a smaller set of test data.
 
-Visit <a href="https://venishjoe.net/post/places-visited-heatmap/"> venishjoe.net/post/places-visited-heatmap </a> for more details. 
+Visit <a href="https://venishjoe.net/posts/places-visited-heatmap/"> venishjoe.net/posts/places-visited-heatmap </a> for more details. 
 
-<img src="https://venishjoe.net/media/images/00012/places-visited-heatmap.png">
+![Application Screenshot](assets/places-visited-heatmap.png)
+
 
 ## Installation
+
 You will need Google Geo API Key and Google API Key to run Go code and HTML Google maps render. Visit below site to get a free API key from Google. 
 
 * <a href="https://developers.google.com/maps/documentation/geocoding/get-api-key"> Google Geo API Key </a>
@@ -46,8 +49,6 @@ Update Google maps URL in ui/places.html with your Google API key
 Load places.html in a browser.
 
 
-## Contact
-[Venish Joe Clarence](http://venishjoe.net)
-
 ## License
-Places Visited Heatmap source code is available under the MIT [License](/LICENSE).
+
+This project is open-source software licensed under the **MIT License**.

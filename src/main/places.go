@@ -53,6 +53,7 @@ func main() {
 
 	//Read commandline arguments
 	disableTLSSecurity := flag.Bool("disableTLSSecurity", false, "To disable TLS Security, send true")
+
 	flag.Parse()
 
 	//Disable TLS Security if disableTLSSecurity is true
